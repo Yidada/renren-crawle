@@ -3,6 +3,7 @@
 # Required
 ```
 node.js >=8.9.1
+System macOS or linux
 ```
 
 # Installation
