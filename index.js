@@ -1,19 +1,32 @@
+/**
+ * @file renren crawler
+ * @author zhangdyida<zydvip@yeah.net>
+ */
 const CONFIG = require('./config/renren');
 const download = require('./dowload');
 const crawlRenren = require('./renren');
 const fs = require('fs');
 
-(async() => {
+(async () => {
     // clear old data;
     let imgs = {};
-    async function clearJson () {
-        fs.stat(CONFIG.jsonPath, (err, stats) => {
-            if (stats) {
-                fs.unlink(CONFIG.jsonPath, () => {
+    async function clearJson() {
+        fs.stat('./data', (err, stats) => {
+            if (!stats) {
+                fs.mkdir('./data', () => {
                     return Promise.resolve();
-                })
+                });
             }
-            return Promise.resolve();
+            else {
+                fs.stat(CONFIG.jsonPath, (err, stats) => {
+                    if (stats) {
+                        fs.unlink(CONFIG.jsonPath, () => {
+                            return Promise.resolve();
+                        });
+                    }
+                    return Promise.resolve();
+                });
+            }
         });
     }
     await clearJson();
@@ -45,7 +58,12 @@ const fs = require('fs');
     await createEmptDir();
 
     // start crawling!!
-    await crawlRenren();
+    try {
+        await crawlRenren();
+    }
+    catch (err) {
+        console.warn(err);
+    }
     
     // read json file
     function readJson () {
@@ -53,6 +71,7 @@ const fs = require('fs');
             fs.readFile(CONFIG.jsonPath, {
                 encoding: 'utf-8'
             }, (err, data) => {
+                console.log(data)
                 if (err) {
                     j(err);
                 }

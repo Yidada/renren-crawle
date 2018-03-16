@@ -2,7 +2,7 @@
 
 # Required
 ```
-node.js >=8.9.1
+node.js >= 7.6.0
 System macOS or linux
 ```
 
