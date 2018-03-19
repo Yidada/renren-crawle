@@ -98,7 +98,7 @@ module.exports = async () => {
         let imgList = await page.evaluate((sel, itemCount) => {
             let imgArr = [];
             imgArr = Array.prototype.slice.call(document.querySelectorAll('.p-b-item'));
-            return imgArr.map(item => item.getAttribute('src'));
+            return imgArr.map(item => JSON.parse(item.getAttribute('data-viewer')).url);
         }, IMG_SELECTOR, itemCount);
 
         return {
